@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>transferir</title>
+    <style>
+
+        .content {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            height: 10%;
+            width: 50%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            font-size: 24px; 
+            font-weight: bold;
+            
+            
+            
+            
+        }
+
+        .cont{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-15%, -15%);
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+            gap: 10px;
+            padding: 0%;
+            margin: 0%;
+
+        }
+    </style>
+</head>
+<body>
+        <li>Banco {{bank}}</li>
+        <div class="content">cpf {{cpf}} </div>
+        <div class="content">saldo {{saldo}} </div>
+
+        <form action="/transferir" method="post" class="form-container">
+            <div>Transferir</div>
+            <br>
+            <label for="cpf_trasnferir">cpf:</label>
+            <input type="text" id="cpf_trasnferir" name="cpf_trasnferir"><br><br>
+            <label for="banco">banco:</banco>
+            <input type="text" id="banco" name="banco"><br><br>
+            <label for="valor">valor:</label>
+            <input type="number" id="valor" name="valor" min="0" max='{{saldo}}'><br><br>
+            <button type="submit">Transferir</button>
+        </form>
+
+        <form action="/atualizatransferir" method="get">
+            <button class="submit" >Recarregar Página</button>
+
+        </form>
+
+
+</body>
+</html>

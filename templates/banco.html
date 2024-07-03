@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco</title>
+    <style>
+
+        .content {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            height: 10%;
+            width: 50%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            font-size: 24px; 
+            font-weight: bold;
+            
+            
+            
+            
+        }
+
+        .cont{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-15%, -15%);
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+            gap: 10px;
+            padding: 0%;
+            margin: 0%;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="cont">
+        <div>
+            <li>Banco {{bank}}</li>
+            <div class="content">cpf {{cpf}} </div>
+            <div class="content">saldo {{saldo}} </div>
+
+        </div>
+        <div>
+            <br>
+            <br><br>
+            <br><br>
+            <br>
+            <form action="/transferir" method="get" class="form-container">
+                <button type="submit">Transferir</button>
+            </form>
+            <form action="/transferirvarios" method="get" class="form-container">
+                <button type="submit">Transferir Tirando de outras contas Minhas</button>
+            </form>
+        </div>
+    </div>
+    
+    
+</body>
+</html>
