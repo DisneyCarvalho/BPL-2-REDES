@@ -12,6 +12,8 @@ banco.addCliente('11','11')
 banco.depositCliente('12',100)
 banco.addCliente('13','12')
 banco.depositCliente('13',110)
+
+
 @app.route('/', methods=['GET'])
 def home():
     return render_template('login.html')
@@ -27,7 +29,6 @@ def bank():
 def login():
     cpf = request.form['cpf']
     senha = request.form['senha']
-    print( banco.clientes)
     if any(cliente == cpf and banco.clientes[cliente].senha == senha for cliente in banco.clientes):
         session['cpf'] = cpf
         return redirect(url_for('bank'))
@@ -39,12 +40,22 @@ def login():
 def register():
     cpf = request.form['cpf']
     senha = request.form['senha']
-    print(banco.clientes,'\n\n')
-    if any(cliente == cpf for cliente in banco.clientes):
-        return 'Já existe'
     
-    banco.addCliente(cpf,senha)
-    return redirect(url_for(('home')))
+
+    try:
+        cpf2 = request.form['cpf2']
+        if any(cpf+cpf2 == cliente or cpf2+cpf == cliente for cliente in banco.clientes):
+            return 'Já existe'
+    except Exception as e:
+        print(e)
+        if any(cliente == cpf for cliente in banco.clientes):
+            return 'Já existe'
+        banco.addCliente(cpf,senha)
+        return redirect(url_for(('home')))
+    if cpf2:
+        banco.addCliente(cpf,senha,cpf2)
+        return redirect(url_for(('home')))
+
 
 
 @app.route('/transferir', methods=['GET'])
@@ -60,7 +71,7 @@ def transferir_post():
         valor = request.form.get('valor')
         valores = request.form.get('valores')
         dicta = json.loads(valores)
-        print(cpf_transferirf,banco,valor, dicta)
+        print("\n\n",cpf_transferirf,banco,valor, dicta, '\n\n')
         if cpf_transferirf is None or banco is None or valor is None or valores is None:
             raise ValueError('Campos obrigatórios não foram enviados')
         else:
@@ -72,7 +83,6 @@ def transferir_post():
         bank = request.form['banco']
         valor = request.form['valor']
         j = {banco.id:{session['cpf']:int(valor)}}
-        print(j)
         banco.tranferece(cpf_trasnferir,bank,{banco.id:{session['cpf']:-int(valor)}})
         return render_template('trasnferir.html',cpf =session['cpf'], saldo = banco.clientes[session['cpf']].saldo , bank = banco.id)
 
@@ -133,7 +143,16 @@ def transferirvarios():
 def conta():
     cpf = request.get_json()
     cliente = banco.clientes.get(cpf,None)
-    return {'banco': banco.id , 'cpf': cliente.cpf, 'saldo': cliente.saldo}
+    if not cliente:
+        return {}
+    
+    contas = []
+    for i in banco.clientes:
+        if cpf == banco.clientes[i].cpf or cpf == banco.clientes[i].cpf2:
+            contas.append({'banco': banco.id , 'cpf': banco.clientes[i].get_cpf(), 'saldo': banco.clientes[i].saldo})
+
+    print(contas)
+    return contas
 
 
 @app.route('/atualizatransferir', methods=['GET'])
@@ -143,7 +162,7 @@ def atualiza():
 
 @app.route('/atualizatransferirtodas', methods=['GET'])
 def atualizatods():
-    return render_template('transferirvarios.html')
+    return redirect(url_for(('transferirvarios')))
 
 
     
