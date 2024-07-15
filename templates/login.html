@@ -15,6 +15,11 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #fff;
         }
+
+        .fcolunm {
+            display: flex;
+            flex-wrap: wrap;
+        }
     </style>
 </head>
 <body>
@@ -31,16 +36,41 @@
         <input type="password" id="senha" name="senha"><br><br>
         <button type="submit">Logar</button>
     </form>
+    <div class="fcolunm">
+        <form action="/register" method="post" class="form-container">
+            <div>Registrar</div>
+            <br>
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" name="cpf"><br><br>
+    
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha"><br><br>
+            <button type="submit">Registrar</button>
+        </form>
 
-    <form action="/register" method="post" class="form-container">
-        <div>Registrar</div>
-        <br>
-        <label for="cpf">CPF:</label>
-        <input type="text" id="cpf" name="cpf"><br><br>
+        <form action="/register" method="post" class="form-container">
+            <div>Registrar Empresa</div>
+            <br>
+            <label for="cpf">cnpj:</label>
+            <input type="text" id="cpf" name="cpf"><br><br>
+    
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha"><br><br>
+            <button type="submit">Registrar</button>
+        </form>
 
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha"><br><br>
-        <button type="submit">Registrar</button>
-    </form>
+        <form action="/register" method="post" class="form-container">
+            <div>Registrar ContaConjunta</div>
+            <br>
+            <label for="cpf">cpf:</label>
+            <input type="text" id="cpf" name="cpf"><br><br>
+            <label for="cpf2">cpf2:</label>
+            <input type="text" id="cpf2" name="cpf2"><br><br>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha"><br><br>
+            <button type="submit">Registrar</button>
+        </form>
+
+    </div>
 </body>
 </html>

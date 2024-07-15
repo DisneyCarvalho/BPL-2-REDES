@@ -51,30 +51,34 @@
     function criarObjetoValores(contas) {
         var resultado = {};
         contas.forEach(function(item) {
-            var valorInput = document.getElementById(`valor_${item.banco}`).value || 0;
-            if (!resultado[item.banco]) {
-                resultado[item.banco] = {};
-            }
-            resultado[item.banco][item.cpf] = parseFloat(valorInput) * -1;
+            item.forEach(function(subitem) {
+                var valorInput = document.getElementById(`valor_${subitem.banco}_${subitem.cpf}`).value || 0;
+                if (!resultado[subitem.banco]) {
+                    resultado[subitem.banco] = {};
+                }
+                resultado[subitem.banco][subitem.cpf] = parseFloat(valorInput) * -1;
+            });
         });
         return resultado;
     }
 
     // Itera sobre os dados recebidos para criar os elementos HTML
-    contas.forEach(function(item) {
-        var divItem = document.createElement('div');
-        divItem.classList.add('item');
-        divItem.innerHTML = `
-            <li>Banco ${item.banco}</li>
-            <div class="content">CPF ${item.cpf}</div>
-            <div class="content">Saldo ${item.saldo}</div>
-            <label for="valor_${item.banco}">Valor:</label>
-            <input type="number" id="valor_${item.banco}" name="valor_${item.banco}" min="0" max="${item.saldo}" placeholder="Insira o valor" onchange="atualizarSoma()">
-        `;
-        listaItens.appendChild(divItem);
+    contas.forEach(function(lista) {
+        lista.forEach(function(item) {
+            var divItem = document.createElement('div');
+            divItem.classList.add('item');
+            divItem.innerHTML = `
+                <li>Banco ${item.banco}</li>
+                <div class="content">CPF ${item.cpf}</div>
+                <div class="content">Saldo ${item.saldo}</div>
+                <label for="valor_${item.banco}_${item.cpf}">Valor:</label>
+                <input type="number" id="valor_${item.banco}_${item.cpf}" name="valor_${item.banco}_${item.cpf}" min="0" max="${item.saldo}" placeholder="Insira o valor" onchange="atualizarSoma()">
+            `;
+            listaItens.appendChild(divItem);
 
-        // Armazena referência ao input de valor
-        inputsValor.push(document.getElementById(`valor_${item.banco}`));
+            // Armazena referência ao input de valor
+            inputsValor.push(document.getElementById(`valor_${item.banco}_${item.cpf}`));
+        });
     });
 
     // Função para enviar os valores
@@ -121,8 +125,7 @@
 </form>
 
 <form action="/atualizatransferirtodas" method="get">
-    <button class="submit" >Recarregar Página</button>
-
+    <button class="submit">Recarregar Página</button>
 </form>
 
 </body>
