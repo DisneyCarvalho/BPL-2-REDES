@@ -13,7 +13,7 @@ class Bank():
         self.id = id
         self.bloqueios = {}
         self.bancos = {}
-        self.bancos['1'] = 'http://192.168.1.6:5000/'
+        self.bancos['1'] = 'http://192.168.1.6:5010/'
         self.bancos['3'] = 'http://192.168.1.6:5030/'
         self.bancos['2'] = 'http://192.168.1.6:5020/'
 
@@ -22,7 +22,11 @@ class Bank():
 
 
 
-    def addCliente(self, cpf,senha):
+    def addCliente(self, cpf,senha, cpf2 = None):
+        if cpf2:
+            self.clientes[cpf+cpf2] = Client(cpf,senha)
+            self.clientes[cpf+cpf2].cpf2 =  cpf2
+            return
         self.clientes[cpf] = Client(cpf,senha)
 
 
@@ -115,15 +119,18 @@ class Bank():
         #print(prepare)  #APAGA
         if all(j == 'ack' for j in prepare):
             for y in transferencias:
-                aux = self.send_message('commit',{y:transferencias[y]})
-                print(y,transferencias[y], 'comit')
-                if aux == 'ack':
-                    comit[y] = transferencias[y]
-                    for l in transferencias[y]:
-                        valor_transferencia_final += transferencias[y][l]
-                else:
-                    self.abort_comits(comit)
-                    return 'not ack'
+                for k in transferencias[y]:
+                    print('commit', y, transferencias[y], '\n\n')
+                    print('commit', {y:{k : transferencias[y][k]}}, '\n\n')
+                    aux = self.send_message('commit',{y:{k : transferencias[y][k]}})
+                    print(y,transferencias[y][k], 'comit')
+                    if aux == 'ack':
+                        comit[y] = {transferencias[y][k]}
+                        for l in transferencias[y]:
+                            valor_transferencia_final += transferencias[y][l]
+                    else:
+                        self.abort_comits(comit)
+                        return 'not ack'
         else:
             return 'not ack'
         
